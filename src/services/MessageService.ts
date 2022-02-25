@@ -43,6 +43,7 @@ export class MessageService {
         }
         message.message = messageUpdate.message ?? message.message;
         message.active = messageUpdate.reactivate ? true : message.active;
+        message.archived_at = messageUpdate.reactivate ? undefined : message.archived_at;
         message.palindrome = this.checkPalindrome(message.message);
         message.updated_at = new Date();
         message.save();
@@ -55,6 +56,7 @@ export class MessageService {
             throw new ApiError("MessageNotFound", 404, "Message not found");
         }
         message.active = false;
+        message.archived_at = new Date();
         message.save();
     }
 

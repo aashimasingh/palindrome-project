@@ -20,7 +20,8 @@ const messageSchema = new mongoose.Schema({
     message: {
         type: String,
         required: true,
-        minlength: 1
+        minlength: 1,
+        unique: true,
     },
     palindrome: {
         type: Boolean,

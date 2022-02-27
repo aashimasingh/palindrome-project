@@ -36,8 +36,8 @@ export class MessageService {
         }
     }
 
-    public async update(messageId: string, messageUpdate: MessageUpdate): Promise<IMessage> {
-        const message = await Message.findOne({id: messageId});
+    public async update(id: string, messageUpdate: MessageUpdate): Promise<IMessage> {
+        const message: IMessage | null = await Message.findOne({id});
         if (!message) {
             throw new ApiError("MessageNotFound", 404, "Message not found");
         }
@@ -46,7 +46,7 @@ export class MessageService {
         message.archived_at = messageUpdate.reactivate ? undefined : message.archived_at;
         message.palindrome = this.checkPalindrome(message.message);
         message.updated_at = new Date();
-        message.save();
+        await message.save();
         return message;
     }
 
@@ -57,7 +57,7 @@ export class MessageService {
         }
         message.active = false;
         message.archived_at = new Date();
-        message.save();
+        await message.save();
     }
 
     private checkPalindrome = (message: string) : boolean => {

@@ -12,7 +12,7 @@ const messages = [
         updated_at: new Date()
     },
     {
-        id: '12348',
+        id: "12348",
         message: 'abc',
         palindrome: false,
         active: true,
@@ -20,6 +20,11 @@ const messages = [
         updated_at: new Date()
     }
 ]
+
+afterEach(() => {
+    jest.clearAllMocks();
+    jest.restoreAllMocks();
+});
 
 describe('MessageService', () => {
     describe('getMessage', () =>{
@@ -66,12 +71,27 @@ describe('MessageService', () => {
             const input: MessageUpdate = {
                 message: 'civic'
             }
-            const findSpy = jest.spyOn(Message, 'findOne').mockResolvedValueOnce(messages[1] as IMessage);
+            const findSpy = jest.spyOn(Message, 'findOne').mockResolvedValueOnce(new Message(messages[1]));
+            const saveSpy = jest.spyOn(Message.prototype, 'save').mockImplementation();
 
             const result = await new MessageService().update(messages[1].id, input);
 
             expect(findSpy).toBeCalledWith({id: messages[1].id});
+            expect(saveSpy).toBeCalledTimes(1);
             expect(result).toHaveProperty('palindrome', true);
+        })
+
+        test('should throw 404 if message not found', async () => {
+            const input: MessageUpdate = {
+                message: 'civic'
+            }
+            const id = messages[1].id;
+
+            const findSpy = jest.spyOn(Message, 'findOne').mockResolvedValueOnce(null);
+
+            await expect(new MessageService().update(messages[1].id, input)).rejects.toThrowError('Message not found');
+
+            expect(findSpy).toHaveBeenCalledWith({id});
         })
     })
 });

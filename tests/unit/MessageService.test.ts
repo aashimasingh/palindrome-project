@@ -1,6 +1,6 @@
-import { Message, IMessage } from '../../models/Message';
-import { MessageCreate, MessageUpdate } from '../../models/MessageCreateAndUpdate';
-import { MessageService } from '../../services/MessageService';
+import { Message, IMessage } from '../../src/models/Message';
+import { MessageCreate, MessageUpdate } from '../../src/models/MessageCreateAndUpdate';
+import { MessageService } from '../../src/services/MessageService';
 
 const messages = [
     {

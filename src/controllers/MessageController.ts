@@ -68,9 +68,9 @@ import MessageTransformer from "../transformers/MessageTransformer";
       return message;
     }
 
-    @SuccessResponse("201", "Message updated") // Custom success response
+    @SuccessResponse("201", "Message deleted") // Custom success response
     @Delete("{messageId}")
-    @Response<ApiError>(404, "Request not found")
+    @Response<ApiError>(404, "Message not found")
     public async deleteMessage(
       @Path() messageId: string,
     ): Promise<void> {
